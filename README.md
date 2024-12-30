@@ -30,6 +30,6 @@ Add as a submodule to parent repo:
 
 `git submodule add https://github.com/IshanG97/llama_server.git llama_server`
 
-To update when cloning Chetter for the first time: 
+To update when cloning parent repo for the first time: 
 
 `git submodule update --init --recursive`
