@@ -16,3 +16,11 @@ Install PyTorch:
 
 Run the Server:
 `uvicorn serve_llama:app --host 0.0.0.0 --port 8000`
+
+Add as a submodule to parent repo:
+
+`git submodule add https://github.com/IshanG97/llama_server.git llama_server`
+
+To update when cloning Chetter for the first time: 
+
+`git submodule update --init --recursive`
