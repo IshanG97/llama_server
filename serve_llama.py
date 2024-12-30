@@ -16,6 +16,10 @@ if not llama_pipeline:
 class Query(BaseModel):
     conversation_history: list
 
+@app.get("/health")
+def health_check():
+    return {'status': 'ok'}
+
 @app.post("/gen_response")
 async def gen_response(query: Query):
     """
