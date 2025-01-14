@@ -4,7 +4,9 @@ Local FastAPI server using Llama 3.2 1B Instruct for response generation, access
 
 Install Required Packages:
 
-- Method 1: `pip install -r requirements.txt`
+- Method 1: 
+   On Windows: `pip install -r requirements_windows.txt`
+   On macOS: `pip install -r requirements_mac.txt`
 
 - Method 2: `pip install fastapi uvicorn accelerate transformers`
 
