@@ -10,10 +10,11 @@ Install Required Packages:
 
 - Method 2: `pip install fastapi uvicorn accelerate transformers`
 
+You can get access from Meta to download Llama via Meta's HuggingFace repo
 
 Install PyTorch:
 
-1. Check your system's CUDA version: `nvidia-smi`
+1. If you are doing this on a CUDA-accelerated device, check your system's CUDA version: `nvidia-smi`
 
 2. Visit https://pytorch.org/ and install the appropriate version. e.g. `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124`
 

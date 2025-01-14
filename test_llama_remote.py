@@ -6,13 +6,13 @@ import os
 load_dotenv()
 
 # Fetch the LLM server URL
-LLAMA_URL = os.getenv("LLAMA_URL", "http://localhost:8000")
+SERVER_URL = os.getenv("SERVER_URL", "http://localhost:8000")
 GEN_RESPONSE_ENDPOINT = os.getenv("GET_RESPONSE_ENDPOINT", "/gen_response")
 HEALTH_ENDPOINT = os.getenv("HEALTH_ENDPOINT", "/health")
-gen_response = LLAMA_URL+GEN_RESPONSE_ENDPOINT
+gen_response = SERVER_URL+GEN_RESPONSE_ENDPOINT
 
 # Step 1: Test if the LLM server is reachable
-def test_llama_url(health_url):
+def health_check_server(health_url):
     try:
         response = requests.get(health_url)
         if response.status_code == 200:
@@ -25,7 +25,7 @@ def test_llama_url(health_url):
         print(f"Error testing LLM server URL: {e}")
         return False
 
-if not test_llama_url(LLAMA_URL+HEALTH_ENDPOINT):
+if not health_check_server(SERVER_URL+HEALTH_ENDPOINT):
     print("LLM server is not reachable. Exiting...")
     exit()
 
