@@ -12,7 +12,7 @@ HEALTH_ENDPOINT = os.getenv("HEALTH_ENDPOINT", "/health")
 gen_response = SERVER_URL+GEN_RESPONSE_ENDPOINT
 
 # Step 1: Test if the LLM server is reachable
-def health_check_server(health_url):
+def _health_check_server(health_url):
     try:
         response = requests.get(health_url)
         if response.status_code == 200:
@@ -25,35 +25,42 @@ def health_check_server(health_url):
         print(f"Error testing LLM server URL: {e}")
         return False
 
-if not health_check_server(SERVER_URL+HEALTH_ENDPOINT):
-    print("LLM server is not reachable. Exiting...")
-    exit()
+def setup():
+    if not _health_check_server(SERVER_URL+HEALTH_ENDPOINT):
+        print("LLM server is not reachable. Exiting...")
+        exit()
 
-# Step 2: Initialize conversation history
-conversation_history = [
-    {"role": "system", "content": "You are a pirate chatbot. Respond in 50 words or less. Make controversial statements."}
-]
+def chat_with_llama(initial_prompt):
+    # Prompt engineer the LLM
+    conversation_history = [
+        {"role": "system", "content": initial_prompt}
+    ]
 
-# Step 3: Main interaction loop
-while True:
-    input_text = input("Enter your text (or type 'exit' to quit): ")
-    if input_text.lower() == "exit":
-        print("Exiting...")
-        break
+    # Main interaction loop
+    while True:
+        input_text = input("Enter your text (or type 'exit' to quit): ")
+        if input_text.lower() == "exit":
+            print("Exiting...")
+            break
 
-    # Append the user's input to the conversation history
-    conversation_history.append({"role": "user", "content": input_text})
+        # Append the user's input to the conversation history
+        conversation_history.append({"role": "user", "content": input_text})
 
-    # Send request to the LLM server
-    try:
-        response = requests.post(gen_response, json={"conversation_history": conversation_history})
-        if response.status_code == 200:
-            reply = response.json().get("response", "No response generated")
-            print("Generated Reply:", reply)
+        # Send request to the LLM server
+        try:
+            response = requests.post(gen_response, json={"conversation_history": conversation_history})
+            if response.status_code == 200:
+                reply = response.json().get("response", "No response generated")
+                print("Generated Reply:", reply)
 
-            # Add the assistant's reply to the conversation history
-            conversation_history.append({"role": "assistant", "content": reply})
-        else:
-            print(f"Error from server: {response.status_code} - {response.text}")
-    except Exception as e:
-        print(f"Error connecting to LLM server: {e}")
+                # Add the assistant's reply to the conversation history
+                conversation_history.append({"role": "assistant", "content": reply})
+            else:
+                print(f"Error from server: {response.status_code} - {response.text}")
+        except Exception as e:
+            print(f"Error connecting to LLM server: {e}")
+
+if __name__ == "__main__":
+    setup()
+    initial_prompt = "You are a pirate chatbot. Respond in 50 words or less. Make controversial statements."
+    chat_with_llama(initial_prompt)
