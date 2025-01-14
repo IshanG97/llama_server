@@ -8,12 +8,10 @@ if not llama_pipeline:
     print("Failed to initialize the pipeline. Exiting.")
 else:
     print("Pipeline initialized. Ready for input!")
-    #input = "Is Trump the skibbidiest of them all?"
 
     # Step 2: Initialize conversation history
     conversation_history = [
         {"role": "system", "content": "You are a pirate chatbot. Respond in pirate speak in 50 words or less. Make controversial statements."},
-        #{"role": "user", "content": input},
     ]
     
     # Step 3: Accept new inputs dynamically
