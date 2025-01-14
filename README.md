@@ -18,8 +18,12 @@ Install PyTorch:
 
 2. Visit https://pytorch.org/ and install the appropriate version. e.g. `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124`
 
+To run the LLM server:
 
-Run the Server: `uvicorn serve_llama:app --host 0.0.0.0 --port 8000`
+1. Run in  one terminal: `uvicorn serve_llama:app --host 0.0.0.0 --port 8000` 
+2. Run in another terminal: `test_llama_remote.py`
+
+If you merely want to test LLM responses without setting up the server, run `test_llama_local.py`
 
 
 Add as a submodule to parent repo: `git submodule add https://github.com/IshanG97/llama_server.git llama_server`
