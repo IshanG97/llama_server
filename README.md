@@ -4,9 +4,7 @@ Local FastAPI server using Llama 3.2 1B Instruct for response generation, access
 
 Install Required Packages:
 
-- Method 1: 
-   On Windows: `pip install -r requirements_windows.txt`
-   On macOS: `pip install -r requirements_mac.txt`
+- Method 1: `pip install -r requirements.txt`
 
 - Method 2: `pip install fastapi uvicorn accelerate transformers`
 
@@ -23,9 +21,7 @@ To run the Llama server:
 1. Run in  one terminal: `uvicorn serve_llm:app --host 0.0.0.0 --port 8000` 
 2. Run in another terminal: `test_llm_remote.py`
 3. If you are running the `uvicorn` server on a different device, create an `.env` file in the root of your project folder and add the `SERVER_URL` variable e.g. `SERVER_URL=http://192.168.1.250:8000`
-
-If you merely want to test Llama responses without setting up the server, run `test_llm_local.py`
-
+4. If you merely want to test Llama responses without setting up the server, run `test_llm_local.py`
 
 Add as a submodule to parent repo: `git submodule add https://github.com/IshanG97/llama_server.git llama_server`
 
