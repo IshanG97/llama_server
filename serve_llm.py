@@ -1,15 +1,15 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from setup_llama import setup_llama
+from setup_llm import setup_llm
 
 # Initialize the FastAPI app
 app = FastAPI()
 
-# Load the LLaMA pipeline when the server starts
-print("Initializing the LLaMA pipeline...")
-llama_pipeline = setup_llama()
+# Load the LLM pipeline when the server starts
+print("Initializing the LLM pipeline...")
+llm_pipeline = setup_llm()
 
-if not llama_pipeline:
+if not llm_pipeline:
     raise RuntimeError("Failed to initialize the pipeline. Ensure model and tokenizer are correctly configured.")
 
 # Define the input format for the API
@@ -26,7 +26,7 @@ async def gen_response(query: Query):
     Accepts conversation history and generates a response.
     """
     try:
-        response = llama_pipeline(
+        response = llm_pipeline(
             query.conversation_history,
             truncation=True,
             num_return_sequences=1,

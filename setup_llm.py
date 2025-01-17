@@ -1,7 +1,7 @@
 import torch
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM, AutoConfig
 
-def setup_llama(model_id="meta-llama/Llama-3.2-1B-Instruct", torch_dtype=torch.bfloat16, device_map="auto"):
+def setup_llm(model_id="meta-llama/Llama-3.2-1B-Instruct", torch_dtype=torch.bfloat16, device_map="auto"):
     print("Ensure you have logged into huggingface-cli (with a token) before accessing gated models.")
 
         # Test access to the model

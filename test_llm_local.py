@@ -1,10 +1,10 @@
-from setup_llama import setup_llama
+from setup_llm import setup_llm
 
-# Step 1: Load the LLaMA pipeline
-print("Initializing the LLaMA pipeline...")
-llama_pipeline = setup_llama()
+# Step 1: Load the LLM pipeline
+print("Initializing the LLM pipeline...")
+llm_pipeline = setup_llm()
 
-if not llama_pipeline:
+if not llm_pipeline:
     print("Failed to initialize the pipeline. Exiting.")
 else:
     print("Pipeline initialized. Ready for input!")
@@ -26,7 +26,7 @@ else:
 
         # Generate a reply
         try:
-            response = llama_pipeline(
+            response = llm_pipeline(
                 conversation_history, 
                 truncation=True, # Works like max_length, in this case prevents exceeding the max context window of the model - this is good for robustness
                 num_return_sequences=1, # Sets the number of responses e.g. top 1 responses, top 3, etc. In the case of a chatbot, we only need 1

@@ -30,7 +30,7 @@ def setup():
         print("LLM server is not reachable. Exiting...")
         exit()
 
-def chat_with_llama(initial_prompt):
+def chat_with_llm(initial_prompt):
     # Prompt engineer the LLM
     conversation_history = [
         {"role": "system", "content": initial_prompt}
@@ -63,4 +63,4 @@ def chat_with_llama(initial_prompt):
 if __name__ == "__main__":
     setup()
     initial_prompt = "You are a pirate chatbot. Respond in 50 words or less. Make controversial statements."
-    chat_with_llama(initial_prompt)
+    chat_with_llm(initial_prompt)
