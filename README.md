@@ -23,7 +23,12 @@ To run the Llama server:
 3. If you are running the `uvicorn` server on a different device, create an `.env` file in the root of your project folder and add the `SERVER_URL` variable e.g. `SERVER_URL=http://192.168.1.250:8000`
 4. If you merely want to test Llama responses without setting up the server, run `test_llm_local.py`
 
-Add as a submodule to parent repo: `git submodule add https://github.com/IshanG97/llama_server.git llama_server`
+To add to parent repo:
+```
+# Add as a submodule
+git submodule add https://github.com/IshanG97/llama_server.git llama_server
 
+# Update when cloning parent repo for the first time
+git submodule update --init --recursive
 
-To update when cloning parent repo for the first time: `git submodule update --init --recursive`
+```
