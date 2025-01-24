@@ -1,41 +1,22 @@
-import torch
-from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM, AutoConfig
+from vllm import LLM, SamplingParams
 
-def setup_llm(model_id="meta-llama/Llama-3.2-1B-Instruct", torch_dtype=torch.bfloat16, device_map="auto"):
+def setup_llm(model_id="meta-llama/Llama-3.2-1B-Instruct", dtype="bfloat16", gpu_memory_utilization=0.9):
     print("Ensure you have logged into huggingface-cli (with a token) before accessing gated models.")
 
-        # Test access to the model
-    print("Checking access to the model...")
     try:
-        config = AutoConfig.from_pretrained(model_id)
-        print(f"Successfully accessed model configuration for {model_id}")
-    except Exception as e:
-        print(f"Error accessing model configuration for {model_id}: {e}")
-        return None
-
-    # Download the model and tokenizer
-    print("Downloading model and tokenizer...")
-    try:
-        tokenizer = AutoTokenizer.from_pretrained(model_id)
-        model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch_dtype, device_map=device_map)
-    except Exception as e:
-        print(f"Error downloading model or tokenizer: {e}")
-        return None
-
-    # Initialize pipeline
-    print("Initializing text-generation pipeline...")
-    try:
-        pipe = pipeline(
-            "text-generation",
-            model=model,
-            tokenizer=tokenizer,
-            pad_token_id=tokenizer.pad_token_id,
-            torch_dtype=torch_dtype,
-            device_map=device_map,
-            #pad_token_id=tokenizer.eos_token_id  # Explicitly set pad_token_id
+        # vLLM provides direct model loading - no separate tokenizer needed
+        llm = LLM(
+            model=model_id,
+            dtype=dtype,  # vLLM uses string dtype instead of torch.dtype
+            gpu_memory_utilization=gpu_memory_utilization,
+            # Optional parameters you might want:
+            # tensor_parallel_size=1,  # For multi-GPU
+            # max_num_batched_tokens=4096,
+            # quantization="awq"  # If you want to use quantization
         )
-        print("Setup complete. The pipeline is ready to use!")
-        return pipe
+        
+        print("Setup complete. The LLM is ready to use!")
+        return llm
     except Exception as e:
-        print(f"Error initializing text-generation pipeline: {e}")
+        print(f"Error initializing vLLM: {e}")
         return None

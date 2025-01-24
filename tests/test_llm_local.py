@@ -1,23 +1,43 @@
 import sys
 from pathlib import Path
-# Go up one level from this test file, convert to string, and append to sys.path
 sys.path.append(str(Path(__file__).parent.parent))
 from setup import setup_llm
+from vllm import SamplingParams
 
-# Step 1: Load the LLM pipeline
-print("Initializing the LLM pipeline...")
-llm_pipeline = setup_llm()
+# Step 1: Load the vLLM model
+print("Initializing vLLM...")
+llm = setup_llm()
 
-if not llm_pipeline:
-    print("Failed to initialize the pipeline. Exiting.")
+if not llm:
+    print("Failed to initialize vLLM. Exiting.")
 else:
-    print("Pipeline initialized. Ready for input!")
+    print("vLLM initialized. Ready for input!")
 
     # Step 2: Initialize conversation history
     conversation_history = [
         {"role": "system", "content": "You are a pirate chatbot. Respond in pirate speak in 50 words or less. Make controversial statements."},
     ]
     
+    # Function to format conversation history
+    def format_conversation(history):
+        formatted = ""
+        for msg in history:
+            if msg["role"] == "system":
+                formatted += f"System: {msg['content']}\n"
+            elif msg["role"] == "user":
+                formatted += f"User: {msg['content']}\n"
+            elif msg["role"] == "assistant":
+                formatted += f"Assistant: {msg['content']}\n"
+        return formatted
+
+    # Set up sampling parameters
+    sampling_params = SamplingParams(
+        temperature=1.0,
+        top_p=0.9,
+        max_tokens=256,
+        n=1,
+    )
+
     # Step 3: Accept new inputs dynamically
     while True:
         input_text = input("Enter your text (or type 'exit' to quit): ")
@@ -30,20 +50,14 @@ else:
 
         # Generate a reply
         try:
-            response = llm_pipeline(
-                conversation_history, 
-                truncation=True, # Works like max_length, in this case prevents exceeding the max context window of the model - this is good for robustness
-                num_return_sequences=1, # Sets the number of responses e.g. top 1 responses, top 3, etc. In the case of a chatbot, we only need 1
-                # Set do_sample=False if you want deterministic, predictable outputs (e.g., summarization or single-answer tasks).
-                # Set do_sample=True if you want creative, diverse responses (e.g., storytelling, open-ended chat) - the model then samples tokens from a PD curve rather than taking the most likely responses
-                do_sample=True,
-                top_p=0.9, # Assigns probability distribution to token selection i.e. scales the creativity of the response by selecting more tokens on the PD curve - works in tandem with do_sample=True, the lower the figure only the deterministic tokens are selected, and the higher the figure more creative tokens are selected as well (between the range 0<n<=1)
-                temperature=1.0, # Higher the value, more it smooths the PD curve i.e. increases chances for more creative tokens to be selected 
-                max_new_tokens=256,
-            )
+            # Format the conversation history into a prompt
+            prompt = format_conversation(conversation_history)
             
-            # Extract and print the generated response
-            reply = response[0]['generated_text']
+            # Generate response using vLLM
+            outputs = llm.generate(prompt, sampling_params)
+            
+            # Extract the generated text
+            reply = outputs[0].outputs[0].text
             print("Generated Reply:", reply)
 
             # Add the assistant's reply to the conversation history

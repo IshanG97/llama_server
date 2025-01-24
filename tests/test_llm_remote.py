@@ -50,7 +50,7 @@ def chat_with_llm(initial_prompt):
         try:
             response = requests.post(gen_response, json={"conversation_history": conversation_history})
             if response.status_code == 200:
-                reply = response.json().get("response", "No response generated")
+                reply = response.json().get("response", "No response generated").strip()
                 print("Generated Reply:", reply)
 
                 # Add the assistant's reply to the conversation history
