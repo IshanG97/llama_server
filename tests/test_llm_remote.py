@@ -1,12 +1,12 @@
+import os
 import requests
 from dotenv import load_dotenv
-import os
 
 # Load environment variables from .env
 load_dotenv()
 
 # Fetch the LLM server URL
-SERVER_URL = os.getenv("SERVER_URL", "http://localhost:8000")
+SERVER_URL = os.getenv("SERVER_URL", "http://localhost:10000")
 GEN_RESPONSE_ENDPOINT = os.getenv("GET_RESPONSE_ENDPOINT", "/gen_response")
 HEALTH_ENDPOINT = os.getenv("HEALTH_ENDPOINT", "/health")
 gen_response = SERVER_URL+GEN_RESPONSE_ENDPOINT

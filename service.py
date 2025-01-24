@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from setup_llm import setup_llm
+from setup import setup_llm
 
 # Initialize the FastAPI app
 app = FastAPI()
@@ -39,3 +39,7 @@ async def gen_response(query: Query):
         return {"response": reply}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating response: {e}")
+    
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=10000)

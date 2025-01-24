@@ -1,4 +1,8 @@
-from setup_llm import setup_llm
+import sys
+from pathlib import Path
+# Go up one level from this test file, convert to string, and append to sys.path
+sys.path.append(str(Path(__file__).parent.parent))
+from setup import setup_llm
 
 # Step 1: Load the LLM pipeline
 print("Initializing the LLM pipeline...")

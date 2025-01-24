@@ -1,0 +1,15 @@
+[project]
+name = "llama-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "accelerate>=1.3.0",
+    "fastapi>=0.115.7",
+    "pydantic>=2.10.6",
+    "python-dotenv>=1.0.1",
+    "torch>=2.5.1",
+    "transformers>=4.48.1",
+    "uvicorn>=0.34.0",
+]
